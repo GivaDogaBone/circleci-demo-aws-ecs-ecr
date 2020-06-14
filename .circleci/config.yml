@@ -35,13 +35,13 @@ set_terraform_environment: &set_terraform_environment
     name: set terraform environment
     command: |
       cd && touch $BASH_ENV
-      cd ~/project/
+      cd ~/project/terraform_setup
 terraform_init: &terraform_init
   run:
     name: terraform init
     command: |
       source $BASH_ENV
-      cd ~/project/
+      cd ~/project/terraform_setup
       terraform init -backend-config="token=${TF_API_TOKEN}"
 apply_job: &apply_job
   <<: *default_config
@@ -55,7 +55,7 @@ apply_job: &apply_job
         name: terraform apply
         command: |
           source $BASH_ENV
-          cd ~/project/
+          cd ~/project/terraform_setup
           terraform init -backend-config="token=${TF_API_TOKEN}"
           terraform apply --auto-approve
 jobs:
@@ -69,7 +69,7 @@ jobs:
           name: terraform fmt
           command: |
             source $BASH_ENV
-            cd ~/project/
+            cd ~/project/terraform_setup
             terraform init -backend-config="token=${TF_API_TOKEN}"
             terraform fmt
       - *save_repo
@@ -84,7 +84,7 @@ jobs:
           name: terraform plan
           command: |
             source $BASH_ENV
-            cd ~/project/
+            cd ~/project/terraform_setup
             terraform plan
 
 
@@ -116,7 +116,7 @@ jobs:
           name: "Destruction of env"
           command: |
             source $BASH_ENV
-            cd ~/project/
+            cd ~/project/terraform_setup
             terraform destroy --auto-approve
 
 
