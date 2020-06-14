@@ -26,6 +26,13 @@ resource "aws_iam_access_key" "circleci" {
   user = aws_iam_user.circleci.name
 }
 
+data "template_file" "circleci_policy" {
+  template = file("/terraform_setup/circleci_s3_access.tpl.json")
+  vars = {
+    s3_bucket_arn = aws_s3_bucket.portfolio.arn
+  }
+}
+
 resource "local_file" "circle_credentials" {
   filename = "tmp/circleci_credentials"
   content  = "${aws_iam_access_key.circleci.id}\n${aws_iam_access_key.circleci.secret}"
@@ -53,7 +60,7 @@ locals {
 }
 
 resource "aws_ecr_repository" "demo-app-repository" {
-  name = "${local.aws_ecr_repository_name}"
+  name = local.aws_ecr_repository_name
 }
 resource "aws_cloudformation_stack" "vpc" {
   name = "${local.aws_vpc_stack_name}"
@@ -69,7 +76,7 @@ resource "aws_cloudformation_stack" "vpc" {
 resource "aws_cloudformation_stack" "ecs_service" {
   name = "${local.aws_ecs_service_stack_name}"
   template_body = "${file("cloudformation-templates/public-service.yml")}"
-  depends_on = ["aws_cloudformation_stack.vpc", "aws_ecr_repository.demo-app-repository"]
+  depends_on = [aws_cloudformation_stack.vpc, aws_ecr_repository.demo-app-repository]
 
   parameters = {
     ContainerMemory = 1024
