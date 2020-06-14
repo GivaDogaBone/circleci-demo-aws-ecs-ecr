@@ -1,14 +1,3 @@
-terraform {
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "GivaDogaBone"
-
-    workspaces {
-      name = "learn-terraform-circleci"
-    }
-  }
-}
-
 provider "aws" {
   access_key = "${var.aws_access_key}"
   secret_key = "${var.aws_secret_key}"
