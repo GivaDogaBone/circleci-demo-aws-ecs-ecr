@@ -10,9 +10,7 @@ terraform {
 }
 
 provider "aws" {
-  # access_key = "${var.aws_access_key}"
-  # secret_key = "${var.aws_secret_key}"
-  # region     = "${var.aws_region}"
+  label = var.label
   region = var.region
   version = "~> 2.7"
 }
@@ -42,17 +40,17 @@ resource "aws_iam_user_policy" "circleci" {
 
 locals {
   # The name of the CloudFormation stack to be created for the VPC and related resources
-  aws_vpc_stack_name = "${var.aws_resource_prefix}-vpc-stack"
+  aws_vpc_stack_name = "${label}-vpc-stack"
   # The name of the CloudFormation stack to be created for the ECS service and related resources
-  aws_ecs_service_stack_name = "${var.aws_resource_prefix}-svc-stack"
+  aws_ecs_service_stack_name = "${label}-svc-stack"
   # The name of the ECR repository to be created
-  aws_ecr_repository_name = "${var.aws_resource_prefix}"
+  aws_ecr_repository_name = "${label}"
   # The name of the ECS cluster to be created
-  aws_ecs_cluster_name = "${var.aws_resource_prefix}-cluster"
+  aws_ecs_cluster_name = "${label}-cluster"
   # The name of the ECS service to be created
-  aws_ecs_service_name = "${var.aws_resource_prefix}-service"
+  aws_ecs_service_name = "${label}-service"
   # The name of the execution role to be created
-  aws_ecs_execution_role_name = "${var.aws_resource_prefix}-ecs-execution-role"
+  aws_ecs_execution_role_name = "${label}-ecs-execution-role"
 }
 
 resource "aws_ecr_repository" "demo-app-repository" {
