@@ -1,3 +1,7 @@
+variable "region" {}
+variable "user" {}
+variable "label" {}
+variable "app" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "aws_account_id" {}

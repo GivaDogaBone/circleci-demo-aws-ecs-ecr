@@ -1,8 +1,43 @@
+terraform {
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "GivaDogaBone"
+
+    workspaces {
+      name = "learn-terraform-circleci"
+    }
+  }
+}
+
 provider "aws" {
-  access_key = "${var.aws_access_key}"
-  secret_key = "${var.aws_secret_key}"
-  region     = "${var.aws_region}"
+  # access_key = "${var.aws_access_key}"
+  # secret_key = "${var.aws_secret_key}"
+  # region     = "${var.aws_region}"
+  region = var.region
   version = "~> 2.7"
+}
+
+provider "template" {
+}
+
+resource "aws_iam_user" "circleci" {
+  name = var.user
+  path = "/system/"
+}
+
+resource "aws_iam_access_key" "circleci" {
+  user = aws_iam_user.circleci.name
+}
+
+resource "local_file" "circle_credentials" {
+  filename = "tmp/circleci_credentials"
+  content  = "${aws_iam_access_key.circleci.id}\n${aws_iam_access_key.circleci.secret}"
+}
+
+resource "aws_iam_user_policy" "circleci" {
+  name   = "AllowCircleCI"
+  user   = aws_iam_user.circleci.name
+  policy = data.template_file.circleci_policy.rendered
 }
 
 locals {
