@@ -33,17 +33,17 @@ resource "local_file" "circle_credentials" {
 
 locals {
   # The name of the CloudFormation stack to be created for the VPC and related resources
-  aws_vpc_stack_name = "${var.label}-vpc-stack"
+  aws_vpc_stack_name = "${var.app}-vpc-stack"
   # The name of the CloudFormation stack to be created for the ECS service and related resources
-  aws_ecs_service_stack_name = "${var.label}-svc-stack"
+  aws_ecs_service_stack_name = "${var.app}-svc-stack"
   # The name of the ECR repository to be created
-  aws_ecr_repository_name = "${var.label}"
+  aws_ecr_repository_name = "${var.app}"
   # The name of the ECS cluster to be created
-  aws_ecs_cluster_name = "${var.label}-cluster"
+  aws_ecs_cluster_name = "${var.app}-cluster"
   # The name of the ECS service to be created
-  aws_ecs_service_name = "${var.label}-service"
+  aws_ecs_service_name = "${var.app}-service"
   # The name of the execution role to be created
-  aws_ecs_execution_role_name = "${var.label}-ecs-execution-role"
+  aws_ecs_execution_role_name = "${var.app}-ecs-execution-role"
 }
 
 resource "aws_ecr_repository" "demo-app-repository" {
@@ -51,7 +51,7 @@ resource "aws_ecr_repository" "demo-app-repository" {
 }
 resource "aws_cloudformation_stack" "vpc" {
   name = local.aws_vpc_stack_name
-  template_body = "${file("cloudformation-templates/public-vpc.yml")}"
+  template_body = file("cloudformation-templates/public-vpc.yml")
   capabilities = ["CAPABILITY_NAMED_IAM"]
   parameters = {
     ClusterName = "${local.aws_ecs_cluster_name}"
