@@ -124,16 +124,16 @@ workflows:
       - apply:
           requires:
             - plan
-      - aws-ecr/build_and_push_image:
-          requires:
-            - apply
+      #- aws-ecr/build_and_push_image:
+      #    requires:
+      #      - apply
           #account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
           #repo: "${AWS_RESOURCE_NAME_PREFIX}"
           #region: ${AWS_DEFAULT_REGION}
           #tag: "${CIRCLE_SHA1}"
-      - aws-ecs/deploy-service-update:
-          requires:
-            - aws-ecr/build_and_push_image
+      #- aws-ecs/deploy-service-update:
+      #    requires:
+      #      - aws-ecr/build_and_push_image
           #aws-region: ${AWS_DEFAULT_REGION}
           #family: "${AWS_RESOURCE_NAME_PREFIX}-service"
           #cluster-name: "${AWS_RESOURCE_NAME_PREFIX}-cluster"
@@ -151,7 +151,8 @@ workflows:
           type: approval
           requires:
             #- deployment
-            - aws-ecs/deploy-service-update
+            #- aws-ecs/deploy-service-update
+            - apply
       - destroy:
           requires:
             - hold
