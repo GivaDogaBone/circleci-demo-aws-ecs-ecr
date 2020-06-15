@@ -160,6 +160,12 @@ workflows:
       - deployment:
           requires:
             - apply
+      - aws-ecr/build_and_push_image:
+          requires:
+            - deployment
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build_and_push_image
       - hold:
           type: approval
           requires:
