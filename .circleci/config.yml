@@ -109,6 +109,28 @@ jobs:
             npm install --user awscli
             export PATH="~/.local/bin:$PATH"
 
+  aws-ecr/build_and_push_image:
+    docker: [{ image: "circleci/node:latest" }]
+    working_directory: "~/project"
+
+    steps:
+      - run:
+          name: "Push to S3"
+          command: |
+            npm install --user awscli
+            export PATH="~/.local/bin:$PATH"
+
+  aws-ecs/deploy-service-update:
+    docker: [{ image: "circleci/node:latest" }]
+    working_directory: "~/project"
+
+    steps:
+      - run:
+          name: "Push to S3"
+          command: |
+            npm install --user awscli
+            export PATH="~/.local/bin:$PATH"
+
 
   destroy:
     <<: *default_config
