@@ -124,13 +124,13 @@ workflows:
       - apply:
           requires:
             - plan
-      #- aws-ecr/build_and_push_image:
-      #    requires:
-      #      - apply
-          #account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-          #repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          #region: ${AWS_DEFAULT_REGION}
-          #tag: "${CIRCLE_SHA1}"
+      - aws-ecr/build_and_push_image:
+          requires:
+            - apply
+          account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          region: ${AWS_DEFAULT_REGION}
+          tag: "${CIRCLE_SHA1}"
       #- aws-ecs/deploy-service-update:
       #    requires:
       #      - aws-ecr/build_and_push_image
@@ -152,7 +152,7 @@ workflows:
           requires:
             #- deployment
             #- aws-ecs/deploy-service-update
-            - apply
+            - aws-ecr/build_and_push_image
       - destroy:
           requires:
             - hold
