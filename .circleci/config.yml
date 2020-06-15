@@ -162,6 +162,7 @@ workflows:
             - apply
       - aws-ecr/build_and_push_image:
           requires:
+            - apply
             - deployment
       - aws-ecs/deploy-service-update:
           requires:
