@@ -98,10 +98,6 @@ jobs:
   apply-with-approval:
     <<: *apply_job
 
-  aws-ecr/build_and_push_image:
-
-  aws-ecs/deploy-service-update:
-
   deployment:
     docker: [{ image: "circleci/node:latest" }]
     working_directory: "~/project"
