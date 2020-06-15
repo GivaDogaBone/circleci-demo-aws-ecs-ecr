@@ -98,16 +98,6 @@ jobs:
   apply-with-approval:
     <<: *apply_job
 
-  deployment:
-    docker: [{ image: "circleci/node:latest" }]
-    working_directory: "~/project"
-
-    steps:
-      - run:
-          name: "Push to S3"
-          command: |
-            npm install --user awscli
-            export PATH="~/.local/bin:$PATH"
 
   destroy:
     <<: *default_config
@@ -134,12 +124,8 @@ workflows:
       - apply:
           requires:
             - plan
-      #- deployment:
-      #    requires:
-      #      - apply
       - aws-ecr/build_and_push_image:
           requires:
-            #- deployment
             - apply
           account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
