@@ -142,7 +142,7 @@ workflows:
             - deployment
           account-url: "${accountid}.dkr.ecr.${region}.amazonaws.com"
           repo: "${app}"
-          region: "${region}"
+          region: ${region}
           tag: "${CIRCLE_SHA1}"
       - aws-ecs/deploy-service-update:
           requires:
