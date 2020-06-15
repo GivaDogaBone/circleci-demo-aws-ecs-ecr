@@ -142,12 +142,12 @@ workflows:
             - deployment
           account-url: "${var.accountid}.dkr.ecr.${var.region}.amazonaws.com"
           repo: "${var.app}"
-          region: ${var.region}
+          region: "${var.region}"
           tag: "${CIRCLE_SHA1}"
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build_and_push_image
-          aws-region: ${AWS_DEFAULT_REGION}
+          aws-region: "${var.region}"
           family: "${var.app}-service"
           cluster-name: "${var.app}-cluster"
           container-image-name-updates: "container=${var.app}-service,image-and-tag=${var.accountid}.dkr.ecr.${var.region}.amazonaws.com/${var.app}:${CIRCLE_SHA1}"
